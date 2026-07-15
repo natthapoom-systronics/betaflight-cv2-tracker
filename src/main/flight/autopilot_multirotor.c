@@ -176,6 +176,27 @@ typedef struct autopilotState_s {
 
 float autopilotAngle[RP_AXIS_COUNT];
 
+#ifdef USE_CV_TRACKER
+static bool cvTrackerDroneControlActive = false;
+
+void cvTrackerSetDroneAngles(float roll_deg, float pitch_deg, bool active)
+{
+    cvTrackerDroneControlActive = active;
+    if (active) {
+        autopilotAngle[AI_ROLL]  = roll_deg;
+        autopilotAngle[AI_PITCH] = pitch_deg;
+    } else {
+        autopilotAngle[AI_ROLL]  = 0.0f;
+        autopilotAngle[AI_PITCH] = 0.0f;
+    }
+}
+
+bool cvTrackerIsDroneControl(void)
+{
+    return cvTrackerDroneControlActive;
+}
+#endif // USE_CV_TRACKER
+
 static autopilotState_t ap = {
     .sanityCheckDistance = SANITY_CHECK_DISTANCE,
     .sticksActive = false,

@@ -121,6 +121,9 @@
 #include "io/flashfs.h"
 #include "io/gimbal.h"
 #include "io/gimbal_control.h"
+#ifdef USE_CV_TRACKER
+#include "io/cv_tracker.h"
+#endif
 #include "io/gps.h"
 #include "io/ledstrip.h"
 #include "io/pidaudio.h"
@@ -909,6 +912,10 @@ void initPhase3(void)
 
 #ifdef USE_GIMBAL
     gimbalInit();
+#endif
+
+#ifdef USE_CV_TRACKER
+    cvTrackerInit();
 #endif
 
     batteryInit(); // always needs doing, regardless of features.

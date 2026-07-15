@@ -46,6 +46,9 @@
 #include "fc/runtime_config.h"
 
 #include "flight/autopilot.h"
+#ifdef USE_CV_TRACKER
+#include "io/cv_tracker.h"
+#endif
 #include "flight/gps_rescue.h"
 #include "flight/imu.h"
 #include "flight/mixer.h"
@@ -602,6 +605,13 @@ STATIC_UNIT_TESTED FAST_CODE_NOINLINE float pidLevel(int axis, const pidProfile_
         angleLimit = fminf((float)autopilotConfig()->maxAngle, angleLimit);
     }
 #endif
+#if defined(USE_CV_TRACKER) && !defined(USE_WING)
+    if (FLIGHT_MODE(CV_TRACKER_MODE) && cvTrackerIsDroneControl()) {
+        angleFeedforward = 0.0f;
+        angleTarget  = autopilotAngle[axis]; // set by cvTrackerSetDroneAngles()
+        angleLimit   = 85.0f;
+    }
+#endif
 
     angleTarget = constrainf(angleTarget, -angleLimit, angleLimit);
 
@@ -1070,6 +1080,9 @@ void FAST_CODE pidController(const pidProfile_t *pidProfile, timeUs_t currentTim
 #endif
 #ifdef USE_POSITION_HOLD
                 || FLIGHT_MODE(POS_HOLD_MODE)
+#endif
+#ifdef USE_CV_TRACKER
+                || FLIGHT_MODE(CV_TRACKER_MODE)
 #endif
                 ;
     levelMode_e levelMode;

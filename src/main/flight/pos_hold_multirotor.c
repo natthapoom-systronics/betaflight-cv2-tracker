@@ -36,6 +36,10 @@
 #include "flight/position_estimator.h"
 #include "rx/rx.h"
 
+#ifdef USE_CV_TRACKER
+#include "io/cv_tracker.h"
+#endif
+
 #include "pg/pos_hold.h"
 #include "pos_hold.h"
 
@@ -114,6 +118,11 @@ void updatePosHold(timeUs_t currentTimeUs) {
 
 bool isAutopilotInControl(void)
 {
+#ifdef USE_CV_TRACKER
+    if (cvTrackerIsDroneControl()) {
+        return true;
+    }
+#endif
     return posHold.isEnabled && posHold.isControlOk && posHold.areSensorsOk;
 }
 

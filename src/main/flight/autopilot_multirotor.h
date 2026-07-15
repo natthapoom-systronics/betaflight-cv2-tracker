@@ -51,4 +51,9 @@ float autopilotGetYawRate(void);
 bool autopilotYawControlActive(void);
 void autopilotSetYawRateLimit(float rateLimitDps); // deg/s, 0 = no mission cap
 
+#ifdef USE_CV_TRACKER
+void cvTrackerSetDroneAngles(float roll_deg, float pitch_deg, bool active);
+bool cvTrackerIsDroneControl(void);
+#endif
+
 #endif // !USE_WING

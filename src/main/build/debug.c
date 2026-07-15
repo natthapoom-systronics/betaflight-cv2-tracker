@@ -122,6 +122,7 @@ const char * const debugModeNames[DEBUG_COUNT] = {
     [DEBUG_SPA] = "SPA",
     [DEBUG_TASK] = "TASK",
     [DEBUG_GIMBAL] = "GIMBAL",
+    [DEBUG_CV_TRACKER] = "CV_TRACKER",
     [DEBUG_WING_SETPOINT] = "WING_SETPOINT",
     [DEBUG_CHIRP] = "CHIRP",
     [DEBUG_FLASH_TEST_PRBS] = "FLASH_TEST_PRBS",

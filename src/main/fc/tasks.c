@@ -67,6 +67,9 @@
 #include "io/dronecan/dronecan.h"
 #include "io/flashfs.h"
 #include "io/gimbal_control.h"
+#ifdef USE_CV_TRACKER
+#include "io/cv_tracker.h"
+#endif
 #include "io/gps.h"
 #include "io/ledstrip.h"
 #include "io/piniobox.h"
@@ -491,6 +494,10 @@ task_attribute_t task_attributes[TASK_COUNT] = {
     [TASK_GIMBAL] = DEFINE_TASK("GIMBAL", NULL, NULL, gimbalUpdate, TASK_PERIOD_HZ(100), TASK_PRIORITY_MEDIUM),
 #endif
 
+#ifdef USE_CV_TRACKER
+    [TASK_CV_TRACKER] = DEFINE_TASK("CV_TRACKER", NULL, NULL, cvTrackerUpdate, TASK_PERIOD_HZ(100), TASK_PRIORITY_MEDIUM),
+#endif
+
 #if ENABLE_OSD_CUSTOM_TEXT
     [TASK_OSD_CUSTOM_TEXT] = DEFINE_TASK("OSD_CTEXT", NULL, NULL, osdCustomTextUpdate, TASK_PERIOD_HZ(100), TASK_PRIORITY_LOW),
 #endif
@@ -693,6 +700,10 @@ void tasksInit(void)
 
 #ifdef USE_GIMBAL
     setTaskEnabled(TASK_GIMBAL, true);
+#endif
+
+#ifdef USE_CV_TRACKER
+    setTaskEnabled(TASK_CV_TRACKER, cvTrackerConfig()->enabled);
 #endif
 
 #if ENABLE_OSD_CUSTOM_TEXT

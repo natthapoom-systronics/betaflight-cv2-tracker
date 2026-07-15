@@ -200,6 +200,9 @@ typedef enum {
 #ifdef USE_GIMBAL
     TASK_GIMBAL,
 #endif
+#ifdef USE_CV_TRACKER
+    TASK_CV_TRACKER,
+#endif
 #if ENABLE_OSD_CUSTOM_TEXT
     TASK_OSD_CUSTOM_TEXT,
 #endif

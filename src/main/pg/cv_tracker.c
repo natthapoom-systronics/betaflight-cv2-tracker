@@ -19,14 +19,28 @@
  * If not, see <http://www.gnu.org/licenses/>.
  */
 
-#pragma once
-
-#include <stdint.h>
-
-bool gimbalInit(void);
-void gimbalUpdate(timeUs_t currentTimeUs);
+#include "platform.h"
 
 #ifdef USE_CV_TRACKER
-void gimbalSetCvTrackerInput(int16_t pitch, int16_t yaw);
-#endif
 
+#include "pg/pg.h"
+#include "pg/pg_ids.h"
+
+#include "cv_tracker.h"
+
+PG_REGISTER_WITH_RESET_TEMPLATE(cvTrackerConfig_t, cvTrackerConfig, PG_CV_TRACKER_CONFIG, 0);
+
+PG_RESET_TEMPLATE(cvTrackerConfig_t, cvTrackerConfig,
+    .enabled       = 0,
+    .p_gain        = 30,
+    .frame_width   = 320,
+    .frame_height  = 240,
+    .timeout_ms    = 500,
+    .invert_pitch  = 0,
+    .invert_yaw    = 0,
+    .drone_follow  = 0,
+    .drone_max_angle = 15,
+    .drone_p_gain  = 30,
+);
+
+#endif // USE_CV_TRACKER

@@ -304,6 +304,20 @@ void gimbalUpdate(timeUs_t currentTimeUs)
     }
 }
 
+#ifdef USE_CV_TRACKER
+/*
+ * Called by cv_tracker at 100 Hz with pre-scaled pitch/yaw values already
+ * in gimbal output range (GIMBAL_PITCH_MIN..MAX, GIMBAL_YAW_MIN..MAX).
+ * These are written directly into gimbalCmdOut so that the next
+ * gimbalUpdate() tick will flush them to the gimbal hardware.
+ */
+void gimbalSetCvTrackerInput(int16_t pitch, int16_t yaw)
+{
+    gimbalCmdOut.pitch = constrain(pitch, GIMBAL_PITCH_MIN, GIMBAL_PITCH_MAX);
+    gimbalCmdOut.yaw   = constrain(yaw,   GIMBAL_YAW_MIN,   GIMBAL_YAW_MAX);
+}
+#endif // USE_CV_TRACKER
+
 bool gimbalInit(void)
 {
     const serialPortConfig_t *portConfig = findSerialPortConfig(FUNCTION_GIMBAL);
