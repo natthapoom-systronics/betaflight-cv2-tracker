@@ -106,6 +106,7 @@
 #include "pg/pinio.h"
 #include "pg/piniobox.h"
 #include "pg/pos_hold.h"
+#include "pg/cv_tracker.h"
 #include "pg/rx.h"
 #include "pg/rx_pwm.h"
 #include "pg/rx_spi.h"
@@ -1820,6 +1821,20 @@ const clivalue_t valueTable[] = {
     { "opticalflow_rotation",     VAR_INT16  | MASTER_VALUE ,              .config.minmaxUnsigned = {0, 359},               PG_OPTICALFLOW_CONFIG, offsetof(opticalflowConfig_t, rotation) },
     { "opticalflow_lpf",          VAR_UINT16 | MASTER_VALUE ,              .config.minmaxUnsigned = {0, 10000},             PG_OPTICALFLOW_CONFIG, offsetof(opticalflowConfig_t, flow_lpf) },
     { "opticalflow_flip_x",       VAR_UINT8  | MASTER_VALUE | MODE_LOOKUP, .config.lookup = { TABLE_OFF_ON },               PG_OPTICALFLOW_CONFIG, offsetof(opticalflowConfig_t, flip_x) },
+#endif
+
+// PG_CV_TRACKER_CONFIG
+#ifdef USE_CV_TRACKER
+    { "cv_tracker_enabled",         VAR_UINT8  | MASTER_VALUE | MODE_LOOKUP, .config.lookup = { TABLE_OFF_ON },               PG_CV_TRACKER_CONFIG, offsetof(cvTrackerConfig_t, enabled) },
+    { "cv_tracker_p_gain",          VAR_UINT8  | MASTER_VALUE,               .config.minmaxUnsigned = {0, 100},               PG_CV_TRACKER_CONFIG, offsetof(cvTrackerConfig_t, p_gain) },
+    { "cv_tracker_frame_width",     VAR_UINT16 | MASTER_VALUE,               .config.minmaxUnsigned = {16, 4096},             PG_CV_TRACKER_CONFIG, offsetof(cvTrackerConfig_t, frame_width) },
+    { "cv_tracker_frame_height",    VAR_UINT16 | MASTER_VALUE,               .config.minmaxUnsigned = {16, 4096},             PG_CV_TRACKER_CONFIG, offsetof(cvTrackerConfig_t, frame_height) },
+    { "cv_tracker_timeout_ms",      VAR_UINT16 | MASTER_VALUE,               .config.minmaxUnsigned = {10, 5000},             PG_CV_TRACKER_CONFIG, offsetof(cvTrackerConfig_t, timeout_ms) },
+    { "cv_tracker_invert_pitch",    VAR_UINT8  | MASTER_VALUE | MODE_LOOKUP, .config.lookup = { TABLE_OFF_ON },               PG_CV_TRACKER_CONFIG, offsetof(cvTrackerConfig_t, invert_pitch) },
+    { "cv_tracker_invert_yaw",      VAR_UINT8  | MASTER_VALUE | MODE_LOOKUP, .config.lookup = { TABLE_OFF_ON },               PG_CV_TRACKER_CONFIG, offsetof(cvTrackerConfig_t, invert_yaw) },
+    { "cv_tracker_drone_follow",    VAR_UINT8  | MASTER_VALUE | MODE_LOOKUP, .config.lookup = { TABLE_OFF_ON },               PG_CV_TRACKER_CONFIG, offsetof(cvTrackerConfig_t, drone_follow) },
+    { "cv_tracker_drone_max_angle", VAR_UINT8  | MASTER_VALUE,               .config.minmaxUnsigned = {1, 45},                PG_CV_TRACKER_CONFIG, offsetof(cvTrackerConfig_t, drone_max_angle) },
+    { "cv_tracker_drone_p_gain",    VAR_UINT8  | MASTER_VALUE,               .config.minmaxUnsigned = {0, 100},               PG_CV_TRACKER_CONFIG, offsetof(cvTrackerConfig_t, drone_p_gain) },
 #endif
 
 // PG_PINIO_CONFIG
