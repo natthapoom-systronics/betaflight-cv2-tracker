@@ -41,22 +41,39 @@ find_arm_gcc() {
     fi
 }
 
+toolchain_healthy() {
+    local gcc_cmd="$1"
+    local cc1_path=""
+
+    [ -x "$gcc_cmd" ] || return 1
+    cc1_path=$($gcc_cmd -print-prog-name=cc1 2>/dev/null || true)
+
+    # A healthy GCC should resolve cc1 to an executable absolute path.
+    if [ -z "$cc1_path" ] || [ "$cc1_path" = "cc1" ] || [ ! -x "$cc1_path" ]; then
+        return 1
+    fi
+
+    return 0
+}
+
 ARM_GCC_CMD=$(find_arm_gcc)
 ARM_GCC_VERSION=""
 if [ -n "$ARM_GCC_CMD" ]; then
     ARM_GCC_VERSION=$($ARM_GCC_CMD -dumpversion 2>/dev/null || true)
 fi
 
-if [ "$ARM_GCC_VERSION" != "$REQUIRED_ARM_GCC_VERSION" ]; then
+if [ "$ARM_GCC_VERSION" != "$REQUIRED_ARM_GCC_VERSION" ] || ! toolchain_healthy "$ARM_GCC_CMD"; then
     echo "[*] Installing required ARM GCC toolchain $REQUIRED_ARM_GCC_VERSION..."
     install_build_deps
     cd "$REPO_ROOT"
+    # Clear any partial/broken install before reinstalling.
+    make arm_sdk_clean
     make GCC_REQUIRED_VERSION="$REQUIRED_ARM_GCC_VERSION" arm_sdk_install
     ARM_GCC_CMD="$ARM_SDK_BIN"
     ARM_GCC_VERSION=$($ARM_GCC_CMD -dumpversion 2>/dev/null || true)
 fi
 
-if [ -z "$ARM_GCC_CMD" ] || [ -z "$ARM_GCC_VERSION" ]; then
+if [ -z "$ARM_GCC_CMD" ] || [ -z "$ARM_GCC_VERSION" ] || ! toolchain_healthy "$ARM_GCC_CMD"; then
     echo "[ERROR] arm-none-eabi-gcc not found. Install the ARM toolchain manually."
     exit 1
 fi

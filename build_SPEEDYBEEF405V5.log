@@ -1,15 +1,5 @@
-%% (optimised) ./src/main/build/version.c 
-%% (size optimised) ./src/main/cli/settings.c 
-Linking STM32F405_SPEEDYBEEF405V5 
-Memory region         Used Size  Region Size  %age Used
-           FLASH:         392 B        16 KB      2.39%
-    FLASH_CONFIG:           0 B        16 KB      0.00%
-          FLASH1:      534702 B       992 KB     52.64%
-   SYSTEM_MEMORY:           0 B        29 KB      0.00%
-             RAM:       88952 B       128 KB     67.86%
-             CCM:       13348 B        64 KB     20.37%
-     BACKUP_SRAM:           0 B         4 KB      0.00%
-       MEMORY_B1:           0 B          0 B
-   text	   data	    bss	    dec	    hex	filename
- 528482	   6612	  95296	 630390	  99e76	./obj/main/betaflight_STM32F405_SPEEDYBEEF405V5.elf
-Creating HEX ./obj/betaflight_2026.6.0-alpha_STM32F405_SPEEDYBEEF405V5.hex 
+arm-none-eabi-gcc: fatal error: cannot execute 'cc1': execvp: No such file or directory
+compilation terminated.
+arm-none-eabi-gcc: fatal error: cannot execute 'cc1': execvp: No such file or directory
+compilation terminated.
+mk/config.mk:64: *** No TARGET identified. Is the ./src/config/configs/SPEEDYBEEF405V5/config.h valid for SPEEDYBEEF405V5?.  Stop.
